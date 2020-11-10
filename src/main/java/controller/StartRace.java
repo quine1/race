@@ -23,18 +23,9 @@ class CommonObject {
     Integer marks[];
 
     CommonObject() {
-        int countCar = 0;
-        int countTruck = 0;
-        int countBike = 0;
-        if (prop.getCarRandomCount()) {
-            countCar = (1 + (int) (Math.random() * 10));
-        } else countCar = prop.getCarCount();
-        if (prop.getTruckRandomCount()) {
-            countTruck = (1 + (int) (Math.random() * 10));
-        } else countTruck = prop.getTruckCount();
-        if (prop.getBikeRandomCount()) {
-            countBike = (1 + (int) (Math.random() * 10));
-        } else countBike = prop.getBikeCount();
+        int countCar = prop.getCarCount();
+        int countTruck = prop.getTruckCount();
+        int countBike = prop.getBikeCount();
         countPlayers = countCar + countTruck + countBike;
         marks = new Integer[countPlayers];
         for (int i = 0; i < countPlayers; i++) {
@@ -198,8 +189,11 @@ class RaceThread implements Runnable {
                 System.out.println(res.finish);
                 if (res.askYesOrNo("Повторить?")) {
                     res.finish.clear();
+                    res.timestart = System.currentTimeMillis();
                     for (RaceThread th : res.race) {
-                        res.timestart = System.currentTimeMillis();
+                        if (th.res.prop.getCarRandomBreakdown()) {
+                            th.breakdown=(Math.random() < 0.5);
+                        }
                         Thread rt = new Thread(th);
                         rt.setName(th.name);
                         rt.start();
