@@ -6,7 +6,7 @@ import java.util.*;
 
 public class StartRace {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
 
         CommonObject commonObject = new CommonObject();
@@ -18,8 +18,8 @@ class CommonObject {
     Preparation preparation = new Preparation();
     Property prop = preparation.getProperty();
     Road road = preparation.createRoad();
-    List listPlayers = new ArrayList<Object>();
-    int countPlayers = 0;
+    List<Object> listPlayers = new ArrayList<Object>();
+    int countPlayers=0;
     Integer marks[];
 
     CommonObject() {
@@ -64,7 +64,7 @@ class CommonObject {
 class RaceObject {
     public Property prop;
     public Road road;
-    public Map finish = new HashMap<String, String>();
+    public Map<String, Map> finish = new HashMap<String, Map>();
     public List<RaceThread> race = new ArrayList<RaceThread>();
     int counter = 0;
     Long timestart = System.currentTimeMillis();
@@ -95,7 +95,6 @@ class RaceObject {
 }
 
 class RaceThread implements Runnable {
-    private final String modelName;
     private long maxSpeed;
     private Integer breakdownSleep;
     private int breakdownPoint = 0;
@@ -109,7 +108,7 @@ class RaceThread implements Runnable {
 
     RaceThread(RaceObject res) {
         this.res = res;
-        modelName = res.model.getClass().getSimpleName();
+        String modelName = res.model.getClass().getSimpleName();
         if (modelName.equals("Car")) {
             Car model = ((Car) res.model);
             load = model.getAmountPeople()+" чел.";
@@ -176,7 +175,7 @@ class RaceThread implements Runnable {
             System.out.printf("Игрок: %s Скорость: %d Время: %d Расстояние: %d %s %s\n", name, speed, time, i + 1, (breakdownPoint == i?"Прокол":""),(i == (res.road.getRoadLength() - 1)?("Место: "+(res.finish.size()+1)):""));
 
             if (i == (res.road.getRoadLength() - 1)) {
-                Map results = new HashMap();
+                Map<String,Object> results = new HashMap<String,Object>();
                 results.put("Прокол", (breakdown ? "Да" : "Нет"));
                 results.put("Время", time);
                 results.put("Скорость", speed);
